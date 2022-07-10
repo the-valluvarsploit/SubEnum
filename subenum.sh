@@ -14,7 +14,7 @@ green="\e[32m"
 blue="\e[34m"
 end="\e[0m"
 VERSION="2022-03-20"
-TOOLS_PATH="$HOME/bb/tools"
+# TOOLS_PATH="$HOME/bb/tools"
 
 PRG=${0##*/}
 
@@ -39,7 +39,7 @@ Usage(){
 	\r    -v, --version      - Displays the version and exit.
 
 	\r# ${bold}${blue}Available Tools${end}:
-	\r	  Waybackurls,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat,Oneforall
+	\r	  Waybackurls,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat
 
 	\r# ${bold}${blue}Examples${end}:
 	\r    - To use a specific Tool(s):
@@ -179,16 +179,16 @@ Crobat() {
 	}	
 }
 
-Oneforall() {
-	[ "$silent" == True ] && python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u | anew subenum-$domain.txt || {
-		[[ ${PARALLEL} == True ]] || { spinner "${bold}Crobat${end}" &
-			PID="$!"
-		}
-		python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u > tmp-oneforall-$domain
-		kill ${PID} 2>/dev/null
-		echo -e "$bold[*] Crobat$end: $(wc -l < tmp-oneforall-$domain)"
-	}	
-}
+# Oneforall() {
+# 	[ "$silent" == True ] && python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u | anew subenum-$domain.txt || {
+# 		[[ ${PARALLEL} == True ]] || { spinner "${bold}Crobat${end}" &
+# 			PID="$!"
+# 		}
+# 		python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u > tmp-oneforall-$domain
+# 		kill ${PID} 2>/dev/null
+# 		echo -e "$bold[*] Crobat$end: $(wc -l < tmp-oneforall-$domain)"
+# 	}	
+# }
 
 
 USE() {
@@ -240,9 +240,9 @@ LIST() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat Oneforall spinner
+				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat Oneforall
+				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 				OUT
 			} || {
@@ -254,7 +254,6 @@ LIST() {
 				Amass 
 				Assetfinder
 				Crobat
-				Oneforall
 				OUT
 			}
 		}
@@ -272,9 +271,9 @@ Main() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat Oneforall spinner
+				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat Oneforall
+				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 			} || {
 				Waybackurls
@@ -285,7 +284,6 @@ Main() {
 				Amass 
 				Assetfinder
 				Crobat
-				Oneforall
 			}
 			[ "$out" == False ] && OUT || OUT $out
 		} || { 
@@ -322,7 +320,6 @@ list=(
 	Amass 
 	Assetfinder
 	Crobat
-	Oneforall
 	)
 
 while [ -n "$1" ]; do
