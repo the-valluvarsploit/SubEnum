@@ -41,6 +41,12 @@ Assetfinder() {
 	printf "[+] Assetfinder Installed !.\n"
 }
 
+Crobat() {
+	printf "                                \r"
+	go install github.com/cgboal/sonarsearch/cmd/crobat@latest &>/dev/null
+	printf "[+] Crobat Installed !.\n"
+}
+
 Httprobe() {
 	printf "                                \r"
 	go get -u github.com/tomnomnom/httprobe
@@ -63,6 +69,7 @@ hash findomain 2>/dev/null && printf "[!] Findomain is already installed.\n" || 
 hash subfinder 2>/dev/null && printf "[!] subfinder is already installed.\n" || { printf "[+] Installing subfinder!" && Subfinder; }
 hash amass 2>/dev/null && printf "[!] Amass is already installed.\n" || { printf "[+] Installing Amass!" && Amass; }
 hash assetfinder 2>/dev/null && printf "[!] Assetfinder is already installed.\n" || { printf "[+] Installing Assetfinder!" && Assetfinder; }
+hash crobat 2>/dev/null && printf "[!] Crobat is already installed.\n" || { printf "[+] Installing Crobat!" && Crobat; }
 hash httprobe 2>/dev/null && printf "[!] Httprobe is already installed.\n" || { printf "[+] Installing Httprobe!" && Httprobe; }
 hash parallel 2>/dev/null && printf "[!] Parallel is already installed.\n" || { printf "[+] Installing Parallel!" && Parallel; }
 
@@ -72,6 +79,7 @@ list=(
 	subfinder
 	amass
 	assetfinder
+	crobat
 	httprobe
 	Parallel
 	)

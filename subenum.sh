@@ -38,7 +38,7 @@ Usage(){
 	\r    -v, --version      - Displays the version and exit.
 
 	\r# ${bold}${blue}Available Tools${end}:
-	\r	  wayback,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder
+	\r	  wayback,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat
 
 	\r# ${bold}${blue}Examples${end}:
 	\r    - To use a specific Tool(s):
@@ -156,6 +156,17 @@ Assetfinder() {
 	}
 }
 
+Crobat() {
+	[ "$silent" == True ] && crobat -s $domain | anew subenum-$domain.txt || {
+		[[ ${PARALLEL} == True ]] || { spinner "${bold}Crobat${end}" &
+			PID="$!"
+		}
+		crobat -s $domain > tmp-crobat-$domain
+		kill ${PID} 2>/dev/null
+		echo -e "$bold[*] Crobat$end: $(wc -l < tmp-crobat-$domain)"
+	}	
+}
+
 
 USE() {
 	for i in $lu; do
@@ -206,9 +217,9 @@ LIST() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder spinner
+				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder
+				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 				OUT
 			} || {
@@ -219,6 +230,7 @@ LIST() {
 				Subfinder 
 				Amass 
 				Assetfinder
+				Crobat
 				OUT
 			}
 		}
@@ -236,9 +248,9 @@ Main() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder spinner
+				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder
+				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 			} || {
 				wayback
@@ -248,6 +260,7 @@ Main() {
 				Subfinder
 				Amass 
 				Assetfinder
+				Crobat
 			}
 			[ "$out" == False ] && OUT || OUT $out
 		} || { 
@@ -283,6 +296,7 @@ list=(
 	Subfinder 
 	Amass 
 	Assetfinder
+	Crobat
 	)
 
 while [ -n "$1" ]; do
