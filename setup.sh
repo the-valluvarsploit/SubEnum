@@ -3,6 +3,9 @@
 # bash script to install SubEnum's dependencies 
 #
 
+TOOLS_PATH="$HOME/bb/tools"
+WORKING_DIR=$(pwd)
+
 GOlang() {
 	printf "                                \r"
 	sys=$(uname -m)
@@ -53,6 +56,13 @@ Waybackurls() {
 	printf "[+] Waybackurls Installed !.\n"
 }
 
+OneForAll() {
+	printf "                                \r"
+	git clone https://github.com/shmilylty/OneForAll $TOOLS_PATH/OneForAll
+	sudo pip3 install -r $TOOLS_PATH/OneForAll/requirements.txt
+	printf "[+] OneForAll Installed !.\n"
+}
+
 Unfurl() {
 	printf "                                \r"
 	go install github.com/tomnomnom/unfurl@latest
@@ -83,6 +93,7 @@ hash amass 2>/dev/null && printf "[!] Amass is already installed.\n" || { printf
 hash assetfinder 2>/dev/null && printf "[!] Assetfinder is already installed.\n" || { printf "[+] Installing Assetfinder!" && Assetfinder; }
 hash crobat 2>/dev/null && printf "[!] Crobat is already installed.\n" || { printf "[+] Installing Crobat!" && Crobat; }
 hash waybackurls 2>/dev/null && printf "[!] Waybackurls is already installed.\n" || { printf "[+] Installing Waybackurls!" && Waybackurls; }
+[ -d "$TOOLS_PATH/OneForAll" ] && printf "[!] OneForAll is already installed.\n" || { printf "[+] Installing OneForAll!" && OneForAll; }
 hash unfurl 2>/dev/null && printf "[!] Unfurl is already installed.\n" || { printf "[+] Installing Unfurl!" && Waybackurls; }
 hash httprobe 2>/dev/null && printf "[!] Httprobe is already installed.\n" || { printf "[+] Installing Httprobe!" && Httprobe; }
 hash parallel 2>/dev/null && printf "[!] Parallel is already installed.\n" || { printf "[+] Installing Parallel!" && Parallel; }
@@ -95,6 +106,7 @@ list=(
 	assetfinder
 	crobat
 	waybackurls
+	oneforall
 	unfurl
 	httprobe
 	Parallel
