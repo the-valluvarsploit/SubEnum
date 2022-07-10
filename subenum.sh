@@ -38,11 +38,11 @@ Usage(){
 	\r    -v, --version      - Displays the version and exit.
 
 	\r# ${bold}${blue}Available Tools${end}:
-	\r	  wayback,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat
+	\r	  Waybackurls,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat
 
 	\r# ${bold}${blue}Examples${end}:
 	\r    - To use a specific Tool(s):
-	\r       $PRG -d hackerone.com -u Findomain,wayback,Subfinder
+	\r       $PRG -d hackerone.com -u Findomain,Waybackurls,Subfinder
 	\r    - To exclude a specific Tool(s):
 	\r       $PRG -d hackerone.com -e Amass,Assetfinder
 	\r    - To use all the Tools:
@@ -78,15 +78,26 @@ spinner(){
 }
 
 
-wayback() {
-	[ "$silent" == True ] && curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u | anew subenum-$domain.txt  || {
-		[[ ${PARALLEL} == True ]] || { spinner "${bold}WayBackMachine${end}" &
+# wayback() {
+# 	[ "$silent" == True ] && curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u | anew subenum-$domain.txt  || {
+# 		[[ ${PARALLEL} == True ]] || { spinner "${bold}WayBackMachine${end}" &
+# 			PID="$!"
+# 		}
+# 		curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u > tmp-wayback-$domain
+# 		[[ ${PARALLEL} == True ]] || kill ${PID} 2>/dev/null
+# 		echo -e "$bold[*] WayBackMachine$end: $(wc -l < tmp-wayback-$domain)"
+# 	}
+# }
+
+Waybackurls() {
+	[ "$silent" == True ] && waybackurls $domain | unfurl -u domain | anew subenum-$domain.txt || {
+		[[ ${PARALLEL} == True ]] || { spinner "${bold}Waybackurls${end}" &
 			PID="$!"
 		}
-		curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u > tmp-wayback-$domain
-		[[ ${PARALLEL} == True ]] || kill ${PID} 2>/dev/null
-		echo -e "$bold[*] WayBackMachine$end: $(wc -l < tmp-wayback-$domain)"
-	}
+		waybackurls $domain | unfurl -u domain > tmp-waybackurls-$domain
+		kill ${PID} 2>/dev/null
+		echo -e "$bold[*] Waybackurls$end: $(wc -l < tmp-waybackurls-$domain)"
+	}	
 }
 
 crt() {
@@ -217,13 +228,13 @@ LIST() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
+				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat
+				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 				OUT
 			} || {
-				wayback
+				Waybackurls
 				crt
 				bufferover
 				Findomain 
@@ -248,12 +259,12 @@ Main() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
+				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: wayback crt bufferover Findomain Subfinder Amass Assetfinder Crobat
+				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 			} || {
-				wayback
+				Waybackurls
 				crt
 				bufferover
 				Findomain 
@@ -289,7 +300,7 @@ thread=40
 PARALLEL=False
 
 list=(
-	wayback
+	Waybackurls
 	crt
 	bufferover
 	Findomain 

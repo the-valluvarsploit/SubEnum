@@ -47,6 +47,18 @@ Crobat() {
 	printf "[+] Crobat Installed !.\n"
 }
 
+Waybackurls() {
+	printf "                                \r"
+	go install github.com/tomnomnom/waybackurls@latest
+	printf "[+] Waybackurls Installed !.\n"
+}
+
+Unfurl() {
+	printf "                                \r"
+	go install github.com/tomnomnom/unfurl@latest
+	printf "[+] Unfurl Installed !.\n"
+}
+
 Httprobe() {
 	printf "                                \r"
 	go get -u github.com/tomnomnom/httprobe
@@ -70,6 +82,8 @@ hash subfinder 2>/dev/null && printf "[!] subfinder is already installed.\n" || 
 hash amass 2>/dev/null && printf "[!] Amass is already installed.\n" || { printf "[+] Installing Amass!" && Amass; }
 hash assetfinder 2>/dev/null && printf "[!] Assetfinder is already installed.\n" || { printf "[+] Installing Assetfinder!" && Assetfinder; }
 hash crobat 2>/dev/null && printf "[!] Crobat is already installed.\n" || { printf "[+] Installing Crobat!" && Crobat; }
+hash waybackurls 2>/dev/null && printf "[!] Waybackurls is already installed.\n" || { printf "[+] Installing Waybackurls!" && Waybackurls; }
+hash unfurl 2>/dev/null && printf "[!] Unfurl is already installed.\n" || { printf "[+] Installing Unfurl!" && Waybackurls; }
 hash httprobe 2>/dev/null && printf "[!] Httprobe is already installed.\n" || { printf "[+] Installing Httprobe!" && Httprobe; }
 hash parallel 2>/dev/null && printf "[!] Parallel is already installed.\n" || { printf "[+] Installing Parallel!" && Parallel; }
 
@@ -80,6 +94,8 @@ list=(
 	amass
 	assetfinder
 	crobat
+	waybackurls
+	unfurl
 	httprobe
 	Parallel
 	)
