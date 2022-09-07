@@ -94,7 +94,7 @@ hash assetfinder 2>/dev/null && printf "[!] Assetfinder is already installed.\n"
 hash crobat 2>/dev/null && printf "[!] Crobat is already installed.\n" || { printf "[+] Installing Crobat!" && Crobat; }
 hash waybackurls 2>/dev/null && printf "[!] Waybackurls is already installed.\n" || { printf "[+] Installing Waybackurls!" && Waybackurls; }
 # [ -d "$TOOLS_PATH/OneForAll" ] && printf "[!] OneForAll is already installed.\n" || { printf "[+] Installing OneForAll!" && OneForAll; }
-hash unfurl 2>/dev/null && printf "[!] Unfurl is already installed.\n" || { printf "[+] Installing Unfurl!" && Waybackurls; }
+hash unfurl 2>/dev/null && printf "[!] Unfurl is already installed.\n" || { printf "[+] Installing Unfurl!" && Unfurl; }
 hash httprobe 2>/dev/null && printf "[!] Httprobe is already installed.\n" || { printf "[+] Installing Httprobe!" && Httprobe; }
 hash parallel 2>/dev/null && printf "[!] Parallel is already installed.\n" || { printf "[+] Installing Parallel!" && Parallel; }
 
