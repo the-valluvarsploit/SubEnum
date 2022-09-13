@@ -78,18 +78,6 @@ spinner(){
 	done
 }
 
-
-# wayback() {
-# 	[ "$silent" == True ] && curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u | anew subenum-$domain.txt  || {
-# 		[[ ${PARALLEL} == True ]] || { spinner "${bold}WayBackMachine${end}" &
-# 			PID="$!"
-# 		}
-# 		curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$domain&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u > tmp-wayback-$domain
-# 		[[ ${PARALLEL} == True ]] || kill ${PID} 2>/dev/null
-# 		echo -e "$bold[*] WayBackMachine$end: $(wc -l < tmp-wayback-$domain)"
-# 	}
-# }
-
 Waybackurls() {
 	[ "$silent" == True ] && waybackurls $domain | unfurl -u domain | anew subenum-$domain.txt || {
 		[[ ${PARALLEL} == True ]] || { spinner "${bold}Waybackurls${end}" &
@@ -178,18 +166,6 @@ Crobat() {
 		echo -e "$bold[*] Crobat$end: $(wc -l < tmp-crobat-$domain)"
 	}	
 }
-
-# Oneforall() {
-# 	[ "$silent" == True ] && python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u | anew subenum-$domain.txt || {
-# 		[[ ${PARALLEL} == True ]] || { spinner "${bold}Crobat${end}" &
-# 			PID="$!"
-# 		}
-# 		python3 $TOOLS_PATH/OneForAll/oneforall.py --target $domain --alive False --brute False --dns False --fmt json --path /tmp run && cat /tmp/$domain.json | jq -r '.[].subdomain' | sort -u > tmp-oneforall-$domain
-# 		kill ${PID} 2>/dev/null
-# 		echo -e "$bold[*] Crobat$end: $(wc -l < tmp-oneforall-$domain)"
-# 	}	
-# }
-
 
 USE() {
 	for i in $lu; do
