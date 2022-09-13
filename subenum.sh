@@ -171,7 +171,7 @@ USE() {
 	for i in $lu; do
 		$i
 	done
-	OUT
+	[[ $out != False ]] && OUT $out || out
 }
 
 
@@ -183,14 +183,15 @@ EXCLUDE() {
 			$i
 		fi
 	done
-	OUT
+	[[ $out != False ]] && OUT $out || out
 }
 
 OUT(){
 	[ "$silent" == False ] && { 
 		[ -n "$1" ] && out="$1" || out="$domain-$(date +'%Y-%m-%d').txt"
-		sort -u tmp-* > $out
-		echo -e $green"[+] The Final Results:$end $(wc -l $out)"
+		result=$(sort -u tmp-* | wc -l)
+		sort -u tmp-* >> $out
+		echo -e $green"[+] The Final Results:$end ${result}"
 		[ $resolve == True ] && ALIVE "$out" "$domain"
 
 		[ $delete == True ] && rm tmp-*	
@@ -220,7 +221,7 @@ LIST() {
 				export domain silent bold end
 				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
-				OUT
+				[[ $out != False ]] && OUT $out || out
 			} || {
 				Waybackurls
 				crt
@@ -230,7 +231,7 @@ LIST() {
 				Amass 
 				Assetfinder
 				Crobat
-				OUT
+				[[ $out != False ]] && OUT $out || out
 			}
 		}
 		[ $prv == "e" ] && EXCLUDE 
