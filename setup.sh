@@ -12,9 +12,9 @@ GOlang() {
 	LATEST=$(curl -s 'https://go.dev/VERSION?m=text')
 	[ $sys == "x86_64" ] && wget https://golang.org/dl/$LATEST.linux-amd64.tar.gz -O golang.tar.gz &>/dev/null || wget https://golang.org/dl/$LATEST.linux-386.tar.gz -O golang.tar.gz &>/dev/null
 	sudo tar -C /usr/local -xzf golang.tar.gz
-	echo "export GOROOT=/usr/local/go" >> $HOME/.bashrc
-	echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
-	echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.bashrc
+	echo "export GOROOT=/usr/local/go" >> $HOME/.zshrc
+	echo "export GOPATH=$HOME/go" >> $HOME/.zshrc
+	echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.zshrc
 	
 	printf "[+] Golang Installed !.\n"
 }
