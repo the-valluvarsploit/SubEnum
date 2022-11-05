@@ -29,13 +29,15 @@ Findomain() {
 
 Subfinder() {
 	printf "                                \r"
-	GO111MODULE=on go get -u -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder &>/dev/null
+	# GO111MODULE=on go get -u -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder &>/dev/null
+	go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest &>/dev/null
 	printf "[+] Subfinder Installed !.\n"
 }
 
 Amass() {
 	printf "                                \r"
-	GO111MODULE=on go get -v github.com/OWASP/Amass/v3/... &>/dev/null
+	# GO111MODULE=on go get -v github.com/OWASP/Amass/v3/... &>/dev/null
+	go install -v github.com/OWASP/Amass/v3/...@master
 	printf "[+] Amass Installed !.\n"
 }
 
@@ -53,13 +55,13 @@ Crobat() {
 
 Waybackurls() {
 	printf "                                \r"
-	go install github.com/tomnomnom/waybackurls@latest
+	go install github.com/tomnomnom/waybackurls@latest &>/dev/null
 	printf "[+] Waybackurls Installed !.\n"
 }
 
 Unfurl() {
 	printf "                                \r"
-	go install github.com/tomnomnom/unfurl@latest
+	go install github.com/tomnomnom/unfurl@latest &>/dev/null
 	printf "[+] Unfurl Installed !.\n"
 }
 
