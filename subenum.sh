@@ -39,7 +39,7 @@ Usage(){
 	\r    -v, --version      - Displays the version and exit.
 
 	\r# ${bold}${blue}Available Tools${end}:
-	\r	  Waybackurls,crt,bufferover,Findomain,Subfinder,Amass,Assetfinder,Crobat
+	\r	  Waybackurls,Findomain,Subfinder,Amass,Assetfinder,Crobat
 
 	\r# ${bold}${blue}Examples${end}:
 	\r    - To use a specific Tool(s):
@@ -87,28 +87,6 @@ Waybackurls() {
 		kill ${PID} 2>/dev/null
 		echo -e "$bold[*] Waybackurls$end: $(wc -l < tmp-waybackurls-$domain)"
 	}	
-}
-
-crt() {
-	[ "$silent" == True ] && curl -sk "https://crt.sh/?q=%.$domain&output=json" | tr ',' '\n' | awk -F'"' '/name_value/ {gsub(/\*\./, "", $4); gsub(/\\n/,"\n",$4);print $4}' | anew subenum-$domain.txt || {
-		[[ ${PARALLEL} == True ]] || { spinner "${bold}crt.sh${end}" &
-			PID="$!"
-		}
-		curl -sk "https://crt.sh/?q=%.$domain&output=json" | tr ',' '\n' | awk -F'"' '/name_value/ {gsub(/\*\./, "", $4); gsub(/\\n/,"\n",$4);print $4}' | sort -u > tmp-crt-$domain
-		[[ ${PARALLEL} == True ]] || kill ${PID} 2>/dev/null
-		echo -e "$bold[*] crt.sh$end: $(wc -l < tmp-crt-$domain)" 
-	}
-}
-
-bufferover() {
-	[ "$silent" == True ] && curl -s "https://dns.bufferover.run/dns?q=.$domain" | grep $domain | awk -F, '{gsub("\"", "", $2); print $2}' | anew subenum-$domain.txt || {
-		[[ ${PARALLEL} == True ]] || { spinner "${bold}BufferOver${end}" &
-			PID="$!"
-		}
-		curl -s "https://dns.bufferover.run/dns?q=.$domain" | grep $domain | awk -F, '{gsub("\"", "", $2); print $2}' | sort -u > tmp-bufferover-$domain
-		[[ ${PARALLEL} == True ]] || kill ${PID} 2>/dev/null
-		echo -e "$bold[*] BufferOver$end: $(wc -l < tmp-bufferover-$domain)"
-	}
 }
 
 Findomain() {
@@ -217,15 +195,13 @@ LIST() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
+				export -f Waybackurls Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
+				parallel -j7 ::: Waybackurls Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 				[[ $out != False ]] && OUT $out || out
 			} || {
 				Waybackurls
-				crt
-				bufferover
 				Findomain 
 				Subfinder 
 				Amass 
@@ -248,14 +224,12 @@ Main() {
 			[[ ${PARALLEL} == True ]] && {
 				spinner "Reconnaissance" &
 				PID="$!"
-				export -f Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat spinner
+				export -f Waybackurls Findomain Subfinder Amass Assetfinder Crobat spinner
 				export domain silent bold end
-				parallel -j7 ::: Waybackurls crt bufferover Findomain Subfinder Amass Assetfinder Crobat
+				parallel -j7 ::: Waybackurls Findomain Subfinder Amass Assetfinder Crobat
 				kill ${PID}
 			} || {
 				Waybackurls
-				crt
-				bufferover
 				Findomain 
 				Subfinder
 				Amass 
@@ -290,8 +264,6 @@ PARALLEL=False
 
 list=(
 	Waybackurls
-	crt
-	bufferover
 	Findomain 
 	Subfinder 
 	Amass 
